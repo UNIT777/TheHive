@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular.module('theHiveControllers')
-        .controller('AlertListCtrl', function($scope, $q, $state, $uibModal, TagSrv, TemplateSrv, AlertingSrv, NotificationSrv, FilteringSrv, Severity) {
+        .controller('AlertListCtrl', function($scope, $rootScope, $q, $state, $uibModal, TagSrv, TemplateSrv, AlertingSrv, NotificationSrv, FilteringSrv, Severity) {
             var self = this;
 
             self.list = [];
@@ -375,6 +375,39 @@
 
             this.getSources = function(query) {
                 return AlertingSrv.sources(query);
+            };
+
+            self.bulkImport = function(event) {
+                function mergeAlerts(result) {
+                    var ids = _.pluck(self.selection, 'id');
+                    var caseID = result;
+                    
+                    var promises = _.map(ids, function(id) {
+                        return AlertingSrv.mergeInto(id, caseID);
+                    });
+    
+                    $q.all(promises).then(function( /*response*/ ) {
+                        self.list.update();
+                        NotificationSrv.log('The selected events have been imported successfully');
+                    }, function(response) {
+                        NotificationSrv.error('The selected events have not been imported successfully');
+                    });
+
+                };
+
+                $uibModal.open({
+                    templateUrl: 'views/partials/alert/bulkalert.dialog.html',
+                    controller: 'BulkAlertModalCtrl',
+                    controllerAs: 'dialog',
+                    size: 'lg',
+                    resolve: {
+                        caze: function() {
+                            return $scope.caze;
+                        }
+                    }
+                }).result.then(function(result) {
+                    mergeAlerts(result);
+                })
             };
 
             this.getTags = function(query) {

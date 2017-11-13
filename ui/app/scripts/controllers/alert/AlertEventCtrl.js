@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular.module('theHiveControllers')
-        .controller('AlertEventCtrl', function($scope, $rootScope, $state, $uibModalInstance, CaseResolutionStatus, AlertingSrv, NotificationSrv, event, templates) {
+        .controller('AlertEventCtrl', function($rootScope, $scope, $state, $uibModalInstance, CaseResolutionStatus, AlertingSrv, NotificationSrv, event, templates) {
             var self = this;
             var eventId = event.id;
 

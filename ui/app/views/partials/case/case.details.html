@@ -58,7 +58,7 @@
             <dd class="text-success">{{caze.impactStatus === 'NoImpact' ? 'No' : 'Yes'}}</dd>
         </dl>
 
-        <dl class="dl-horizontal clear" ng-show="isCaseClosed()">
+        <dl class="dl-horizontal clear">
             <dt class="pull-left text-success">Summary</dt>
             <dd>
                 <updatable-text on-update="updateField('summary', newValue)" value="caze.summary"></updatable-text>

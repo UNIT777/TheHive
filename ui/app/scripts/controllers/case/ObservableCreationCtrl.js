@@ -5,7 +5,7 @@
     'use strict';
 
     angular.module('theHiveControllers').controller('ObservableCreationCtrl',
-        function($scope, $stateParams, $uibModalInstance, clipboard, CaseArtifactSrv, ListSrv, NotificationSrv) {
+        function($scope, $stateParams, $uibModalInstance, ObservableCreationPopulateSrv, clipboard, CaseArtifactSrv, ListSrv, NotificationSrv) {
 
             $scope.activeTlp = 'active';
             $scope.pendingAsync = false;
@@ -13,7 +13,7 @@
             $scope.params = {
                 bulk: false,
                 ioc: false,
-                data: '',
+                data: ObservableCreationPopulateSrv.getParamsData(),
                 tlp: 2,
                 message: '',
                 tags: [],
@@ -41,7 +41,9 @@
 
             $scope.selectDataType = function(type) {
                 $scope.params.dataType = type;
-                delete $scope.params.data;
+                if (type === 'file') {
+                    delete $scope.params.data;
+                };
                 delete $scope.params.attachment;
             };
 
@@ -130,6 +132,7 @@
 
                     $uibModalInstance.close(response);
                 }
+                ObservableCreationPopulateSrv.clearParamsData();                
             };
 
             $scope.handleSaveFailure = function(response) {
@@ -145,7 +148,7 @@
 
                     $uibModalInstance.close(response);
                 }
-
+                ObservableCreationPopulateSrv.clearParamsData();                
             };
 
             $scope.copyToClipboard = function() {
@@ -155,6 +158,7 @@
             };
 
             $scope.cancel = function() {
+                ObservableCreationPopulateSrv.clearParamsData();                
                 $uibModalInstance.dismiss();
             };
 

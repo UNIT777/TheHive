@@ -8,11 +8,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" uib-dropdown-menu>
-                    <!--
-                        <li>
-                            <a ng-click="$vm.bulkImport()">Import</a>
-                        </li>
-                        -->
+                    <li>
+                        <a href ng-click="$vm.bulkImport($event)">Bulk Import Alerts</a>
+                    </li>
                     <li ng-show="$vm.menu.follow">
                         <a href ng-click="$vm.bulkFollow(true)">Track new updates</a>
                     </li>

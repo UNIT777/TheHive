@@ -59,7 +59,7 @@
     </div>
 </div>
 
-<div class="row observable-report" ng-if="report">
+<div class="row observable-report" ng-if="report" ng-mouseleave="closeAddObservableTooltip()">
     <div class="col-md-12">
         <h3 class="pad10 text-primary">
             Report <small>for {{report.template}} analysis of {{(report.endDate || report.startDate) | showDate}}</small>
@@ -67,7 +67,16 @@
                 <small><a href class="text-primary" ng-click="showRaw = !showRaw">{{showRaw ? 'Hide': 'Show'}} Raw Report</a></small>
             </span>
         </h3>
-        <div ng-if="showRaw">
+        <!-- Hidden tooltip for Adding an Observable from within a report -->
+        <div id="infoDiv" class="tooltipDiv">
+            <div class="btn-group">
+                <button class="btn btn-primary" ng-click="addArtifact()">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Add observable
+                </button>
+            </div>
+        </div>
+        <div ng-if="showRaw" ng-mouseup="showSelectedText()">
             <div class="panel" ng-class="{'panel-info': report.content.success, 'panel-danger': !report.content.success}">
                 <div class="panel-heading">
                     <strong>Raw report</strong>
@@ -84,6 +93,7 @@
             name="report.template"
             status="report.status"
             success="report.content.success"
+            ng-mouseup="showSelectedText()"
             ></report>
     </div>
 </div>

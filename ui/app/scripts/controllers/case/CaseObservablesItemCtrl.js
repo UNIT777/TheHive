@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     angular.module('theHiveControllers').controller('CaseObservablesItemCtrl',
-        function ($scope, $state, $stateParams, $q, $timeout, $document, CaseTabsSrv, CaseArtifactSrv, CortexSrv, PSearchSrv, AnalyzerSrv, NotificationSrv, VersionSrv, appConfig) {
+        function ($scope, $state, $stateParams, $q, $timeout, $document, CaseTabsSrv, $uibModal, ObservableCreationPopulateSrv, CaseArtifactSrv, CortexSrv, PSearchSrv, AnalyzerSrv, NotificationSrv, VersionSrv, appConfig) {
             var observableId = $stateParams.itemId,
                 observableName = 'observable-' + observableId;
 
@@ -214,6 +214,49 @@
                     });
             };
 
+            //Selected Text methods
+            $scope.addArtifact = function () {
+                $uibModal.open({
+                    animation: 'true',
+                    templateUrl: 'views/partials/observables/observable.creation.html',
+                    controller: 'ObservableCreationCtrl',
+                    size: 'lg'
+                });
+            };
+
+            $scope.closeAddObservableTooltip = function () {
+                $('#infoDiv').css('display', 'none');
+            };
+
+            //$scope.prepopulateObservableCreation = function(data) {
+            //    ObservableCreationPopulateCtrl.setParamsData(data);
+            //};
+
+            $scope.getSelectionText = function() {
+                var text = "";
+                if (window.getSelection) {
+                    var selectionObj = window.getSelection();
+                    text = selectionObj.toString();
+
+
+                } else if (document.selection && document.selection.type != "Control") {
+                    text = document.selection.createRange().text;
+                }
+                return text;
+            };
+
+            $scope.showSelectedText = function() {
+                $scope.selectedText =  $scope.getSelectionText();
+                ObservableCreationPopulateSrv.setParamsData($scope.selectedText);
+                if ($scope.selectedText) {
+                        $('#infoDiv').css('display', 'block');
+                        $('#infoDiv').css('position', 'fixed');
+                        $('#infoDiv').css('left', '60%');
+                        $('#infoDiv').css('top', '90%');
+                } else {
+                        $('#infoDiv').css('display', 'none');
+                };
+            };
         }
     );
 
